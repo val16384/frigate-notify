@@ -3,7 +3,7 @@ name: Docker Build & Publish
 on:
   push:
     tags: [ 'v*.*.*' ]
-    branches: [ 'main', 'dev' ]
+    branches: [ 'main', 'dev', 'claude/add-docker-github-actions-sB0ts' ]
   pull_request:
     branches: [ 'main', 'dev' ]
   workflow_dispatch:

@@ -6,6 +6,12 @@ on:
     branches: [ 'main', 'dev' ]
   pull_request:
     branches: [ 'main', 'dev' ]
+  workflow_dispatch:
+    inputs:
+      push_image:
+        description: 'Push image to registry'
+        type: boolean
+        default: true
 
 env:
   REGISTRY: ghcr.io
@@ -78,7 +84,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || inputs.push_image) }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64

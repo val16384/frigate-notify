@@ -143,6 +143,15 @@ func SendAlert(events []models.Event) {
 			}
 		}
 	}
+	// VK Messenger
+	for id, profile := range config.ConfigData.Alerts.VKMessenger {
+		if profile.Enabled {
+			provider := notifMeta{name: "vkmessenger", index: id}
+			if checkAlertFilters(events, profile.Filters, provider) {
+				go SendVKMessengerMessage(event, bytes.NewReader(snap), provider)
+			}
+		}
+	}
 	// Webhook
 	for id, profile := range config.ConfigData.Alerts.Webhook {
 		if profile.Enabled {

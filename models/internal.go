@@ -35,8 +35,9 @@ type Notifiers struct {
 	Pushover   []NotifierStatus `json:"pushover" doc:"Status of Pushover notifications"`
 	Signal     []NotifierStatus `json:"signal" doc:"Status of Signal notifications"`
 	SMTP       []NotifierStatus `json:"smtp" doc:"Status of SMTP notifications"`
-	Telegram   []NotifierStatus `json:"telegram" doc:"Status of Telegram notifications"`
-	Webhook    []NotifierStatus `json:"webhook" doc:"Status of Webhook notifications"`
+	Telegram    []NotifierStatus `json:"telegram" doc:"Status of Telegram notifications"`
+	VKMessenger []NotifierStatus `json:"vkmessenger" doc:"Status of VK Messenger notifications"`
+	Webhook     []NotifierStatus `json:"webhook" doc:"Status of Webhook notifications"`
 }
 
 type NotifierStatus struct {

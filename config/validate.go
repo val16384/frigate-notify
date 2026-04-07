@@ -181,6 +181,17 @@ func (c *Config) Validate() []string {
 		}
 	}
 
+	// Validate VK Messenger
+	Internal.Status.Notifications.VKMessenger = make([]models.NotifierStatus, len(c.Alerts.VKMessenger))
+	for id, profile := range c.Alerts.VKMessenger {
+		Internal.Status.Notifications.VKMessenger[id].InitNotifStatus(id, profile.Enabled)
+		if profile.Enabled {
+			if results := c.validateVKMessenger(id); len(results) > 0 {
+				validationErrors = append(validationErrors, results...)
+			}
+		}
+	}
+
 	// Validate Webhook
 	Internal.Status.Notifications.Webhook = make([]models.NotifierStatus, len(c.Alerts.Webhook))
 	for id, profile := range c.Alerts.Webhook {
@@ -807,6 +818,22 @@ func (c *Config) validateTelegram(id int) []string {
 	return telegramErrors
 }
 
+func (c *Config) validateVKMessenger(id int) []string {
+	var vkErrors []string
+	log.Debug().Msgf("Alerting enabled for VK Messenger profile ID %v", id)
+	if c.Alerts.VKMessenger[id].Token == "" {
+		vkErrors = append(vkErrors, fmt.Sprintf("No VK Messenger community token specified! Profile ID %v", id))
+	}
+	if c.Alerts.VKMessenger[id].PeerID == 0 {
+		vkErrors = append(vkErrors, fmt.Sprintf("No VK Messenger peer_id specified! Profile ID %v", id))
+	}
+	// Check template syntax
+	if msg := validateTemplate("VK Messenger", c.Alerts.VKMessenger[id].Template); msg != "" {
+		vkErrors = append(vkErrors, msg+fmt.Sprintf(" Profile ID %v", id))
+	}
+	return vkErrors
+}
+
 func (c *Config) validateWebhook(id int) []string {
 	var webhookErrors []string
 	log.Debug().Msgf("Alerting enabled for Webhook profile ID %v", id)
@@ -869,6 +896,11 @@ func (c *Config) validateAlertingEnabled() string {
 		}
 	}
 	for _, profile := range c.Alerts.Telegram {
+		if profile.Enabled {
+			return ""
+		}
+	}
+	for _, profile := range c.Alerts.VKMessenger {
 		if profile.Enabled {
 			return ""
 		}

@@ -333,6 +333,21 @@ alerts:
     # Custom notification template, if desired
     template:
 
+  # VK Messenger Config
+  vkmessenger:
+    # Set to true to enable alerting via VK Messenger
+    enabled: false
+    # VK community access token (from community settings -> API usage)
+    token:
+    # Recipient peer_id:
+    #   - For direct messages: user_id (e.g. 123456789)
+    #   - For group chats: 2000000000 + chat_id (e.g. 2000000001)
+    peer_id:
+    # Set to true to attach snapshot as a photo
+    send_snap: false
+    # Custom notification template, if desired
+    template:
+
   # Webhook Config
   webhook:
     # Set to true to enable alerting via webhook

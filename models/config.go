@@ -74,8 +74,9 @@ type Alerts struct {
 	Pushover     []Pushover   `koanf:"pushover" json:"pushover,omitempty" doc:"Pushover notification settings"`
 	Signal       []Signal     `koanf:"signal" json:"signal,omitempty" doc:"Signal notification settings"`
 	SMTP         []SMTP       `koanf:"smtp" json:"smtp,omitempty" doc:"SMTP notification settings"`
-	Telegram     []Telegram   `koanf:"telegram" json:"telegram,omitempty" doc:"Telegram notification settings"`
-	Webhook      []Webhook    `koanf:"webhook" json:"webhook,omitempty" doc:"Webhook notification settings"`
+	Telegram     []Telegram      `koanf:"telegram" json:"telegram,omitempty" doc:"Telegram notification settings"`
+	VKMessenger  []VKMessenger   `koanf:"vkmessenger" json:"vkmessenger,omitempty" doc:"VK Messenger notification settings"`
+	Webhook      []Webhook       `koanf:"webhook" json:"webhook,omitempty" doc:"Webhook notification settings"`
 }
 
 type General struct {
@@ -222,6 +223,13 @@ type Telegram struct {
 	MessageThreadID int    `koanf:"message_thread_id" json:"message_thread_id,omitempty" doc:"Send message to thread by ID" default:"0"`
 	Token           string `koanf:"token" json:"token,omitempty" doc:"Telegram bot token" default:""`
 	SendClip        bool   `koanf:"send_clip" json:"send_clip,omitempty" doc:"Send event video clip instead of snapshot image" default:"false"`
+}
+
+type VKMessenger struct {
+	AlertCommon `koanf:",squash"`
+	Token       string `koanf:"token" json:"token,omitempty" doc:"VK community access token" default:""`
+	PeerID      int64  `koanf:"peer_id" json:"peer_id,omitempty" doc:"Recipient peer ID: user_id for direct messages, or 2000000000+chat_id for group chats" default:"0"`
+	SendSnap    bool   `koanf:"send_snap" json:"send_snap,omitempty" enum:"true,false" doc:"Attach snapshot as photo to message" default:"false"`
 }
 
 type Webhook struct {
